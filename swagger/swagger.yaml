@@ -1,0 +1,74 @@
+swagger: "2.0"
+info:
+  description: "This is the API documentation for the Cloud-Based File Management System."
+  version: "1.0.0"
+  title: "Cloud File Management API"
+host: "api.cloudfilemanager.com"
+basePath: "/v1"
+schemes:
+  - "https"
+paths:
+  /files:
+    get:
+      summary: "List all files"
+      description: "Retrieve a list of all files in the cloud storage."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/File"
+    post:
+      summary: "Upload a new file"
+      description: "Upload a new file to the cloud storage."
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "file"
+          in: "formData"
+          required: true
+          type: "file"
+      responses:
+        201:
+          description: "File uploaded successfully"
+  /files/{fileId}:
+    get:
+      summary: "Retrieve a file"
+      description: "Retrieve details of a specific file using its ID."
+      parameters:
+        - name: "fileId"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/File"
+    delete:
+      summary: "Delete a file"
+      description: "Delete a specific file using its ID."
+      parameters:
+        - name: "fileId"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        204:
+          description: "File deleted successfully"
+definitions:
+  File:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      size:
+        type: "integer"
+      createdAt:
+        type: "string"
+        format: "date-time"
